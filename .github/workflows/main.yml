@@ -3,9 +3,8 @@ name: Norme Tests
 on:
   push:
     paths:
-      - 'src/**'
-      - 'include/**'
-      - 'lib/libft/**'
+      - 'philo/src/**'
+      - 'philo/include/**'
   workflow_dispatch:
 jobs:
   norme-test:
