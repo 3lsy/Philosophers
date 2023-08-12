@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/08/12 01:28:56 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/08/12 17:22:51 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	exit_error(char *e);
 t_ph	*ft_ph(void);
 
 /*
+** Analyzer
+*/
+
+void	ft_analyzer(char **vargs);
+
+/*
 ** Utils
 */
 
@@ -39,5 +45,6 @@ void	ft_putendl_fd(char *s, int fd);
 int		ft_putstr_fd(char *s, int fd);
 size_t	ft_strlen(const char *str);
 void	ft_putchar_fd(char c, int fd);
+int		ft_isdigit(int c);
 
 #endif

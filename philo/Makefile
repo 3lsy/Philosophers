@@ -6,7 +6,7 @@
 #    By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 11:47:33 by echavez-          #+#    #+#              #
-#    Updated: 2023/08/12 11:17:42 by echavez-         ###   ########.fr        #
+#    Updated: 2023/08/12 17:23:46 by echavez-         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -25,8 +25,8 @@ DIRFOO      :=  $(DIRSRC)utils/
 
 DIRS        :=  $(DIRSRC) $(DIRFOO)
 
-SRC         =   main.c
-FOO         =	ft_strlen.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_perror.c
+SRC         =   main.c analyzer.c
+FOO         =	ft_strlen.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_perror.c ft_isdigit.c
 
 SRCS        :=  $(SRC) $(FOO)
 
