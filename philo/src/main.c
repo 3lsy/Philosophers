@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:43:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/08/12 17:42:04 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/08/12 20:06:31 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	exit_error(char *e)
 t_ph	*ft_ph(void)
 {
 	static t_ph	x = {
+		.n_philo = 0
 	};
 
 	return (&x);

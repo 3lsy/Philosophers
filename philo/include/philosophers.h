@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/08/12 17:22:51 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/08/12 20:13:38 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <pthread.h>
 
 typedef struct s_ph {
+	int	n_philo;
 }	t_ph;
 
 /*
@@ -46,5 +47,8 @@ int		ft_putstr_fd(char *s, int fd);
 size_t	ft_strlen(const char *str);
 void	ft_putchar_fd(char c, int fd);
 int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
+int		ft_isint(char *nb);
+int		ft_strcmp(char *s1, char *s2);
 
 #endif
