@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:55:04 by echavez-          #+#    #+#             */
-/*   Updated: 2023/08/12 20:16:17 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/08/24 11:58:15 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static void	ft_lexer_parser(char *arg)
 	}
 }
 
-static void	ft_semantic(char *arg, int i)
+static void	ft_semantic(char *arg)
 {
-	if (i == 1 && (!ft_isint(arg) || (ft_atoi(arg) <= 0)))
-		exit_error("The first arg must be a int and bigger than 0");
+	if (!ft_isint(arg) || (ft_atoi(arg) <= 0))
+		exit_error("The arg must be an int and bigger than 0");
 }
 
 void	ft_analyzer(char **vargs)
@@ -41,7 +41,7 @@ void	ft_analyzer(char **vargs)
 		if (ft_strlen(vargs[i]) == 0)
 			exit_error("Empty argument");
 		ft_lexer_parser(vargs[i]);
-		ft_semantic(vargs[i], i);
+		ft_semantic(vargs[i]);
 		i++;
 	}
 	if (i == 1)
