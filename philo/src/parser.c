@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:55:04 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/01 20:12:21 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:46:52 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static int	ft_isdigits(char *arg)
 {
 	int	i;
 
+	if (ft_strlen(arg) == 0)
+		return (0);
 	i = 0;
 	while (arg[i])
 	{
@@ -58,25 +60,36 @@ static void	init_stomach(t_ph *ph)
 		ph->stomach_full[i++] = 0;
 }
 
+static void	valid_args(char **vargs)
+{
+	if (!ft_isdigits(vargs[1]) || !ft_isint(vargs[1]) || !ft_atoi(vargs[1]))
+		exit_error("Invalid argument: \
+The argument must be a non-zero integer.", NULL);
+	if (
+		!ft_isdigits(vargs[2]) || !ft_isull(vargs[2]) || !ft_atoull(vargs[2])
+		|| !ft_isdigits(vargs[3]) || !ft_isull(vargs[3]) || !ft_atoull(vargs[3])
+		|| !ft_isdigits(vargs[4]) || !ft_isull(vargs[4]) || !ft_atoull(vargs[4])
+	)
+		exit_error("Invalid argument: \
+The argument must be a non-zero unsigned long long millisec.", NULL);
+	if (
+		vargs[5] 
+		&& (!ft_isdigits(vargs[5]) || !ft_isint(vargs[5]) || !ft_atoi(vargs[5]))
+	)
+		exit_error("Invalid argument: \
+The argument must be a non-zero integer.", NULL);
+}
+
 t_ph	*ft_arg_parser(char **vargs)
 {
-	int		i;
 	t_ph	*ph;
 
-	i = 1;
-	while (vargs[i])
-	{
-		if (!ft_strlen(vargs[i]) || !ft_isdigits(vargs[i])
-			|| !ft_isint(vargs[i]) || !ft_atoi(vargs[i]))
-			exit_error("Invalid argument: The argument must be a positive\
- non-zero integer.", NULL);
-		i++;
-	}
+	valid_args(vargs);
 	ph = ft_ph();
 	ph->n_philo = ft_atoi(vargs[1]);
-	ph->die = ft_atoi(vargs[2]);
-	ph->eat = ft_atoi(vargs[3]);
-	ph->sleep = ft_atoi(vargs[4]);
+	ph->die = ft_atoull(vargs[2]);
+	ph->eat = ft_atoull(vargs[3]);
+	ph->sleep = ft_atoull(vargs[4]);
 	if (vargs[5])
 	{
 		ph->times_eat = ft_atoi(vargs[5]);
