@@ -6,19 +6,14 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:43:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/08/12 20:06:31 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/01 20:13:11 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	main(int ac, char **av)
+static void	ft_usage(void)
 {
-	if (ac == 5 || ac == 6)
-	{
-		ft_analyzer(av);
-		return (0);
-	}
 	ft_putendl_fd("There must be 4 to 5 arguments", 2);
 	ft_putendl_fd("Usage: ./philo arg1 arg2 arg3 arg4 [arg5]", 2);
 	ft_putendl_fd("In which:", 2);
@@ -27,25 +22,52 @@ int	main(int ac, char **av)
 	ft_putendl_fd(" arg3 : time_to_eat", 2);
 	ft_putendl_fd(" arg4 : time_to_sleep", 2);
 	ft_putendl_fd(" arg5 : [opt] number_of_times_each_philosopher_must_eat", 2);
-	return (1);
 }
 
-void	exit_error(char *e)
+void	ft_destructor(t_ph *ph)
 {
+	if (ph)
+	{
+		pthread_mutex_destroy(&ph->data_meal);
+		if (ph->philo)
+			free(ph->philo);
+		if (ph->forks)
+			ph = destroy_forks(ph);
+		if (ph->ids)
+			free(ph->ids);
+		if (ph->stomach_full)
+			free(ph->stomach_full);
+	}
+}
+
+void	exit_error(char *e, t_ph *ph)
+{
+	ft_destructor(ph);
 	ft_perror("Error\n", EXIT_FAILURE);
 	ft_perror(e, EXIT_FAILURE);
 	exit(ft_perror("\n", EXIT_FAILURE));
 }
 
-t_ph	*ft_ph(void)
+int	main(int ac, char **av)
 {
-	static t_ph	x = {
-		.n_philo = 0
-	};
+	t_ph	*ph;
+	int		i;
 
-	return (&x);
-}
-
-static __attribute__((destructor)) void	ph_destructor(void)
-{
+	if (ac == 5 || ac == 6)
+	{
+		i = 0;
+		ph = ft_arg_parser(av);
+		ph = create_forks(ph);
+		ph = create_philosophers(ph);
+		pthread_mutex_init(&ph->data_meal, NULL);
+		pthread_mutex_init(&ph->data_stomach, NULL);
+		pthread_create(&ph->lamuerte, NULL, lamuerte, (void *)ph);
+		while (i < ph->n_philo)
+			pthread_join(ph->philo[i++], NULL);
+		pthread_join(ph->lamuerte, NULL);
+		ft_destructor(ph);
+		return (EXIT_SUCCESS);
+	}
+	ft_usage();
+	return (EXIT_FAILURE);
 }
