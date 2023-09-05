@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 18:29:48 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:03:33 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 struct						s_id;
 
 typedef unsigned long long	t_ull;
+
+/*
+** For optional parameter (times_eat):
+**  times_eat = 1 -> no limit
+**  stomach_full = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+**  data_stomach = mutex
+*/
 
 typedef struct s_ph {
 	int				n_philo;

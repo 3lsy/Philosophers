@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 22:18:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 17:36:12 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/05 19:20:14 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	*philosopher(void *arg)
 
 	id = (t_id *)arg;
 	ph = id->ph;
-	id->time_last_meal = get_timestamp_in_ms();
+	id->time_last_meal = set_last_meal(ph, id->id, get_timestamp_in_ms());
 	id->meal_counter = 0;
 	while (1)
 	{
