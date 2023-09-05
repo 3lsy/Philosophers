@@ -6,7 +6,7 @@
 #    By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/25 11:47:33 by echavez-          #+#    #+#              #
-#    Updated: 2023/09/04 16:20:28 by echavez-         ###   ########.fr        #
+#    Updated: 2023/09/05 17:29:42 by echavez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ DIRFOO      :=  $(DIRSRC)utils/
 
 DIRS        :=  $(DIRSRC) $(DIRFOO)
 
-SRC         =   main.c parser.c fork.c philosopher.c actions.c lamuerte.c
+SRC         =   main.c parser.c fork.c philosopher.c actions.c lamuerte.c protected.c
 FOO         =	ft_strlen.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_perror.c ft_isdigit.c ft_isint.c ft_atoi.c ft_strcmp.c ft_atoull.c ft_isull.c
 
 SRCS        :=  $(SRC) $(FOO)

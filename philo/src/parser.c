@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:55:04 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/04 16:46:52 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:30:21 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,17 @@ t_ph	*ft_ph(void)
 		.eat = 0,
 		.sleep = 0,
 		.times_eat = -1,
+		.terminate_program = 0,
+		.last_meal = NULL,
 		.stomach_full = NULL,
 		.ids = NULL,
 		.forks = NULL,
 		.philo = NULL,
 		.lamuerte = 0,
 		.data_meal = PTHREAD_MUTEX_INITIALIZER,
-		.data_stomach = PTHREAD_MUTEX_INITIALIZER
+		.data_stomach = PTHREAD_MUTEX_INITIALIZER,
+		.data_termination = PTHREAD_MUTEX_INITIALIZER,
+		.data_print = PTHREAD_MUTEX_INITIALIZER
 	};
 
 	return (&x);
@@ -83,6 +87,7 @@ The argument must be a non-zero integer.", NULL);
 t_ph	*ft_arg_parser(char **vargs)
 {
 	t_ph	*ph;
+	int		i;
 
 	valid_args(vargs);
 	ph = ft_ph();
@@ -95,5 +100,11 @@ t_ph	*ft_arg_parser(char **vargs)
 		ph->times_eat = ft_atoi(vargs[5]);
 		init_stomach(ph);
 	}
+	ph->last_meal = malloc(sizeof(t_ull) * ph->n_philo);
+	if (!ph->last_meal)
+		exit_error("Failed to allocate memory for philosophers.", ph);
+	i = 0;
+	while (i < ph->n_philo)
+		ph->last_meal[i++] = 0;
 	return (ph);
 }

@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 22:18:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/01 19:51:59 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/05 17:36:12 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,12 @@ static void	*philosopher(void *arg)
 	id->meal_counter = 0;
 	while (1)
 	{
-		takes_forks(ph, id, id->id, (id->id + 1) % ph->n_philo);
-		ph_eats(ph, id, id->id, (id->id + 1) % ph->n_philo);
-		ph_sleeps(ph, id);
+		if (!takes_forks(ph, id, id->id, (id->id + 1) % ph->n_philo))
+			return (NULL);
+		if (!ph_eats(ph, id, id->id, (id->id + 1) % ph->n_philo))
+			return (NULL);
+		if (!ph_sleeps(ph, id))
+			return (NULL);
 	}
 	return (NULL);
 }

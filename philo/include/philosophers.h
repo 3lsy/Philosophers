@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/04 16:20:53 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:29:48 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <sys/time.h>
 # include <pthread.h>
 
+# define THINKING "is thinking"
+# define FORKING "has taken a fork"
+# define EATING "is eating"
+# define SLEEPING "is sleeping"
+# define DEAD "died"
+
 struct						s_id;
 
 typedef unsigned long long	t_ull;
@@ -30,13 +36,17 @@ typedef struct s_ph {
 	t_ull			eat;
 	t_ull			sleep;
 	int				times_eat;
+	int				terminate_program;
 	int				*stomach_full;
+	t_ull			*last_meal;
 	struct s_id		*ids;
 	pthread_mutex_t	*forks;
 	pthread_t		*philo;
 	pthread_t		lamuerte;
 	pthread_mutex_t	data_meal;
 	pthread_mutex_t	data_stomach;
+	pthread_mutex_t	data_termination;
+	pthread_mutex_t	data_print;
 }	t_ph;
 
 typedef struct s_id {
@@ -65,9 +75,10 @@ t_ph	*ft_ph(void);
 ** Actions
 */
 
-void	takes_forks(t_ph *ph, t_id *id, int lfork, int rfork);
-void	ph_eats(t_ph *ph, t_id *id, int lfork, int rfork);
-void	ph_sleeps(t_ph *ph, t_id *id);
+int		acting(t_ph *ph, char *act_str, int id, t_ull time);
+int		takes_forks(t_ph *ph, t_id *id, int lfork, int rfork);
+int		ph_eats(t_ph *ph, t_id *id, int lfork, int rfork);
+int		ph_sleeps(t_ph *ph, t_id *id);
 
 /*
 ** Philosopher
@@ -89,6 +100,16 @@ void	*lamuerte(void *arg);
 
 t_ph	*create_forks(t_ph *ph);
 t_ph	*destroy_forks(t_ph *ph);
+
+/*
+** Protect
+*/
+
+void	terminate_program(t_ph *ph);
+int		check_termination(t_ph *ph);
+void	stomach_full(t_ph *ph, int id);
+int		check_if_full(t_ph *ph, int id);
+t_ull	set_last_meal(t_ph *ph, int id, t_ull time);
 
 /*
 ** Utils
