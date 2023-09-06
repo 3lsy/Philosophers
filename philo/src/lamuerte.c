@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:34:22 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 19:56:26 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/06 20:12:53 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	*lamuerte(void *arg)
 	ph = (t_ph *)arg;
 	while (1)
 	{
-		usleep(1000);
+		usleep(2000);
 		if (!check_every_philosopher(ph))
 			return (NULL);
 	}

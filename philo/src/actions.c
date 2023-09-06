@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:24:11 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 20:04:59 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/06 19:10:40 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	acting(t_ph *ph, char *act_str, int id, t_ull time)
 
 int	takes_forks(t_ph *ph, t_id *id, int lfork, int rfork)
 {
-	if (!acting(ph, THINKING, id->id, get_timestamp_in_ms()))
-		return (0);
 	pthread_mutex_lock(&ph->forks[lfork]);
 	if (!acting(ph, FORKING, id->id, get_timestamp_in_ms()))
 	{
@@ -58,10 +56,12 @@ int	ph_eats(t_ph *ph, t_id *id, int lfork, int rfork)
 		pthread_mutex_unlock(&ph->forks[rfork]);
 		return (0);
 	}
+	set_eating(ph, id, 1);
 	id->meal_counter++;
 	usleep(ph->eat * 1000);
 	pthread_mutex_unlock(&ph->forks[lfork]);
 	pthread_mutex_unlock(&ph->forks[rfork]);
+	set_eating(ph, id, 0);
 	if (ph->times_eat != -1 && id->meal_counter == ph->times_eat)
 		stomach_full(ph, id->id);
 	return (1);

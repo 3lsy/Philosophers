@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 19:03:33 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/06 18:52:19 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_ph {
 	t_ull			sleep;
 	int				times_eat;
 	int				terminate_program;
+	int				*eating;
 	int				*stomach_full;
 	t_ull			*last_meal;
 	struct s_id		*ids;
@@ -51,6 +52,7 @@ typedef struct s_ph {
 	pthread_t		*philo;
 	pthread_t		lamuerte;
 	pthread_mutex_t	data_meal;
+	pthread_mutex_t	data_eating;
 	pthread_mutex_t	data_stomach;
 	pthread_mutex_t	data_termination;
 	pthread_mutex_t	data_print;
@@ -94,6 +96,7 @@ int		ph_sleeps(t_ph *ph, t_id *id);
 t_ph	*create_philosophers(t_ph *ph);
 void	check_if_dead(t_ph *ph, t_id *id, t_ull time_last_meal);
 t_ull	get_timestamp_in_ms(void);
+void	set_eating(t_ph *ph, t_id *id, int eating);
 
 /*
 ** Muerte

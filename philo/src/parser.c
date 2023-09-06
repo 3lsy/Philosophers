@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:55:04 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/05 18:30:21 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/06 18:50:10 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_ph	*ft_ph(void)
 		.sleep = 0,
 		.times_eat = -1,
 		.terminate_program = 0,
+		.eating = NULL,
 		.last_meal = NULL,
 		.stomach_full = NULL,
 		.ids = NULL,
@@ -44,24 +45,13 @@ t_ph	*ft_ph(void)
 		.philo = NULL,
 		.lamuerte = 0,
 		.data_meal = PTHREAD_MUTEX_INITIALIZER,
+		.data_eating = PTHREAD_MUTEX_INITIALIZER,
 		.data_stomach = PTHREAD_MUTEX_INITIALIZER,
 		.data_termination = PTHREAD_MUTEX_INITIALIZER,
 		.data_print = PTHREAD_MUTEX_INITIALIZER
 	};
 
 	return (&x);
-}
-
-static void	init_stomach(t_ph *ph)
-{
-	int	i;
-
-	i = 0;
-	ph->stomach_full = malloc(sizeof(int) * ph->n_philo);
-	if (!ph->stomach_full)
-		exit_error("Failed to allocate memory for philosophers.", ph);
-	while (i < ph->n_philo)
-		ph->stomach_full[i++] = 0;
 }
 
 static void	valid_args(char **vargs)
@@ -84,10 +74,36 @@ The argument must be a non-zero unsigned long long millisec.", NULL);
 The argument must be a non-zero integer.", NULL);
 }
 
+static void	init_arrays(t_ph *ph, char **vargs)
+{
+	int	i;
+
+	if (vargs[5])
+	{
+		i = 0;
+		ph->stomach_full = malloc(sizeof(int) * ph->n_philo);
+		if (!ph->stomach_full)
+			exit_error("Failed to allocate memory for philosophers.", ph);
+		while (i < ph->n_philo)
+			ph->stomach_full[i++] = 0;
+	}
+	ph->last_meal = malloc(sizeof(t_ull) * ph->n_philo);
+	if (!ph->last_meal)
+		exit_error("Failed to allocate memory for philosophers.", ph);
+	i = 0;
+	while (i < ph->n_philo)
+		ph->last_meal[i++] = 0;
+	ph->eating = malloc(sizeof(t_ull) * ph->n_philo);
+	if (!ph->eating)
+		exit_error("Failed to allocate memory for philosophers.", ph);
+	i = 0;
+	while (i < ph->n_philo)
+		ph->eating[i++] = 0;
+}
+
 t_ph	*ft_arg_parser(char **vargs)
 {
 	t_ph	*ph;
-	int		i;
 
 	valid_args(vargs);
 	ph = ft_ph();
@@ -96,15 +112,7 @@ t_ph	*ft_arg_parser(char **vargs)
 	ph->eat = ft_atoull(vargs[3]);
 	ph->sleep = ft_atoull(vargs[4]);
 	if (vargs[5])
-	{
 		ph->times_eat = ft_atoi(vargs[5]);
-		init_stomach(ph);
-	}
-	ph->last_meal = malloc(sizeof(t_ull) * ph->n_philo);
-	if (!ph->last_meal)
-		exit_error("Failed to allocate memory for philosophers.", ph);
-	i = 0;
-	while (i < ph->n_philo)
-		ph->last_meal[i++] = 0;
+	init_arrays(ph, vargs);
 	return (ph);
 }
