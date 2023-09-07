@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 22:18:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 18:14:44 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:12:09 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,44 +19,31 @@ void	set_eating(t_ph *ph, t_id *id, int eating)
 	pthread_mutex_unlock(&ph->data_eating);
 }
 
-static int	get_eating(t_ph *ph, int id)
-{
-	int	eating;
-
-	pthread_mutex_lock(&ph->data_eating);
-	eating = ph->eating[id];
-	pthread_mutex_unlock(&ph->data_eating);
-	return (eating);
-}
-
 static int	every_odd_eats(t_ph *ph)
 {
-	int	i;
+	int	id;
+	int	is_eating;
 
-	i = 1;
-	while (i < ph->n_philo)
+	id = 1;
+	while (id < ph->n_philo)
 	{
-		if (!get_eating(ph, i))
+		pthread_mutex_lock(&ph->data_eating);
+		is_eating = ph->eating[id];
+		pthread_mutex_unlock(&ph->data_eating);
+		if (!is_eating)
 			return (0);
-		i += 2;
+		id += 2;
 	}
 	return (1);
 }
 
-int	too_much_thinking(t_ph *ph, t_id *id, t_ull time_thinking)
+static int	too_much_thinking(t_ph *ph, t_ull time_thinking)
 {
 	t_ull	time_limit;
 
 	time_limit = ph->eat * 0.5;
 	if (get_timestamp_in_ms() - time_thinking > time_limit)
 		return (1);
-	// if (!get_eating(ph, (id->id + 1) % ph->n_philo)
-	// 	&& get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo))
-	// 	return (0);
-	// if (!get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo) 
-	// 	&& get_eating(ph, (id->id + 1) % ph->n_philo))
-	// 	return (0);
-
 	if (!every_odd_eats(ph))
 		return (0);
 	return (1);
@@ -72,13 +59,12 @@ static void	*philosopher(void *arg)
 	ph = id->ph;
 	id->time_last_meal = set_last_meal(ph, id->id, ph->start_time);
 	id->meal_counter = 0;
-	//usleep(1000 * (id->id % 2 == 0));
-	while (1)
+	while (!check_termination(ph))
 	{
-		if (!acting(ph, THINKING, id->id, get_timestamp_in_ms()))
+		if (!acting(ph, THINKING, id->id, NULL))
 			return (NULL);
 		time_thinking = get_timestamp_in_ms();
-		while (id->id % 2 == 0 && !too_much_thinking(ph, id, time_thinking))
+		while (id->id % 2 == 0 && !too_much_thinking(ph, time_thinking))
 			usleep(500);
 		if (!takes_forks(ph, id, id->id, (id->id + 1) % ph->n_philo))
 			return (NULL);

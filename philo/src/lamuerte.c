@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 17:34:22 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 15:01:12 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 19:05:57 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	ph_died(t_ph *ph, int id)
 	time_last_meal = get_last_meal(ph, id);
 	if (get_timestamp_in_ms() - time_last_meal > (t_ull)ph->die)
 	{
-		acting(ph, DEAD, id, get_timestamp_in_ms());
+		acting(ph, DEAD, id, NULL);
 		terminate_program(ph);
 		return (1);
 	}

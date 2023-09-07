@@ -6,21 +6,23 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:24:11 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 18:19:54 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:53:24 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	acting(t_ph *ph, char *act_str, int id, t_ull time)
+int	acting(t_ph *ph, char *act_str, int id, t_ull *time_last_meal)
 {
-	t_ull	start_time;
+	t_ull	time;
 
 	if (check_termination(ph))
 		return (0);
 	pthread_mutex_lock(&ph->data_print);
-	start_time = ph->start_time;
-	printf("%llu %d %s\n", time - start_time, id + 1, act_str);
+	time = get_timestamp_in_ms();
+	if (time_last_meal)
+		*time_last_meal = set_last_meal(ph, id, time);
+	printf("%llu %d %s\n", time - ph->start_time, id + 1, act_str);
 	pthread_mutex_unlock(&ph->data_print);
 	return (1);
 }
@@ -28,7 +30,7 @@ int	acting(t_ph *ph, char *act_str, int id, t_ull time)
 int	takes_forks(t_ph *ph, t_id *id, int lfork, int rfork)
 {
 	pthread_mutex_lock(&ph->forks[lfork]);
-	if (!acting(ph, FORKING, id->id, get_timestamp_in_ms()))
+	if (!acting(ph, FORKING, id->id, NULL))
 	{
 		pthread_mutex_unlock(&ph->forks[lfork]);
 		return (0);
@@ -41,7 +43,7 @@ int	takes_forks(t_ph *ph, t_id *id, int lfork, int rfork)
 		return (0);
 	}
 	pthread_mutex_lock(&ph->forks[rfork]);
-	if (!acting(ph, FORKING, id->id, get_timestamp_in_ms()))
+	if (!acting(ph, FORKING, id->id, NULL))
 	{
 		pthread_mutex_unlock(&ph->forks[lfork]);
 		pthread_mutex_unlock(&ph->forks[rfork]);
@@ -52,8 +54,7 @@ int	takes_forks(t_ph *ph, t_id *id, int lfork, int rfork)
 
 int	ph_eats(t_ph *ph, t_id *id, int lfork, int rfork)
 {
-	id->time_last_meal = set_last_meal(ph, id->id, get_timestamp_in_ms());
-	if (!acting(ph, EATING, id->id, id->time_last_meal))
+	if (!acting(ph, EATING, id->id, &(id->time_last_meal)))
 	{
 		pthread_mutex_unlock(&ph->forks[lfork]);
 		pthread_mutex_unlock(&ph->forks[rfork]);
@@ -71,7 +72,7 @@ int	ph_eats(t_ph *ph, t_id *id, int lfork, int rfork)
 
 int	ph_sleeps(t_ph *ph, t_id *id)
 {
-	if (!acting(ph, SLEEPING, id->id, get_timestamp_in_ms()))
+	if (!acting(ph, SLEEPING, id->id, NULL))
 		return (0);
 	usleep(ph->sleep * 1000);
 	set_eating(ph, id, 0);
