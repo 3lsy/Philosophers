@@ -68,7 +68,7 @@ The argument must be a non-zero integer.", NULL);
 		exit_error("Invalid argument: \
 The argument must be a non-zero unsigned long long millisec.", NULL);
 	if (
-		vargs[5] 
+		vargs[5]
 		&& (!ft_isdigits(vargs[5]) || !ft_isint(vargs[5]) || !ft_atoi(vargs[5]))
 	)
 		exit_error("Invalid argument: \
