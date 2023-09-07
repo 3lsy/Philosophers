@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:24:11 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 18:53:24 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 20:00:27 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ int	acting(t_ph *ph, char *act_str, int id, t_ull *time_last_meal)
 {
 	t_ull	time;
 
-	if (check_termination(ph))
-		return (0);
 	pthread_mutex_lock(&ph->data_print);
+	if (check_termination(ph))
+	{
+		pthread_mutex_unlock(&ph->data_print);
+		return (0);
+	}
 	time = get_timestamp_in_ms();
 	if (time_last_meal)
 		*time_last_meal = set_last_meal(ph, id, time);
