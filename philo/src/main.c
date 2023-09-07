@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:43:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/06 20:26:04 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:44:05 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	ft_destructor(t_ph *ph)
 			free(ph->stomach_full);
 		if (ph->last_meal)
 			free(ph->last_meal);
+		if (ph->eating)
+			free(ph->eating);
 	}
 }
 
