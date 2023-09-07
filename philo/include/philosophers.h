@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:38:25 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/06 18:52:19 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:53:39 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_ph {
 	t_ull			die;
 	t_ull			eat;
 	t_ull			sleep;
+	t_ull			start_time;
 	int				times_eat;
 	int				terminate_program;
 	int				*eating;

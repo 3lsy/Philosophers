@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 14:55:04 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/06 18:50:10 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 13:53:49 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_ph	*ft_ph(void)
 		.die = 0,
 		.eat = 0,
 		.sleep = 0,
+		.start_time = 0,
 		.times_eat = -1,
 		.terminate_program = 0,
 		.eating = NULL,

@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:24:11 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/06 19:10:40 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:42:52 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 int	acting(t_ph *ph, char *act_str, int id, t_ull time)
 {
+	t_ull	start_time;
+
 	if (check_termination(ph))
 		return (0);
 	pthread_mutex_lock(&ph->data_print);
-	printf("%llu %d %s\n", time, id + 1, act_str);
+	start_time = ph->start_time;
+	printf("%llu %d %s\n", time - start_time, id + 1, act_str);
 	pthread_mutex_unlock(&ph->data_print);
 	return (1);
 }
