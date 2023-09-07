@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 22:18:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 17:44:01 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:14:44 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ static int	get_eating(t_ph *ph, int id)
 	return (eating);
 }
 
+static int	every_odd_eats(t_ph *ph)
+{
+	int	i;
+
+	i = 1;
+	while (i < ph->n_philo)
+	{
+		if (!get_eating(ph, i))
+			return (0);
+		i += 2;
+	}
+	return (1);
+}
+
 int	too_much_thinking(t_ph *ph, t_id *id, t_ull time_thinking)
 {
 	t_ull	time_limit;
@@ -36,11 +50,14 @@ int	too_much_thinking(t_ph *ph, t_id *id, t_ull time_thinking)
 	time_limit = ph->eat * 0.5;
 	if (get_timestamp_in_ms() - time_thinking > time_limit)
 		return (1);
-	if (!get_eating(ph, (id->id + 1) % ph->n_philo)
-		&& get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo))
-		return (0);
-	if (!get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo) 
-		&& get_eating(ph, (id->id + 1) % ph->n_philo))
+	// if (!get_eating(ph, (id->id + 1) % ph->n_philo)
+	// 	&& get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo))
+	// 	return (0);
+	// if (!get_eating(ph, (ph->n_philo + id->id - 1) % ph->n_philo) 
+	// 	&& get_eating(ph, (id->id + 1) % ph->n_philo))
+	// 	return (0);
+
+	if (!every_odd_eats(ph))
 		return (0);
 	return (1);
 }
@@ -55,7 +72,7 @@ static void	*philosopher(void *arg)
 	ph = id->ph;
 	id->time_last_meal = set_last_meal(ph, id->id, ph->start_time);
 	id->meal_counter = 0;
-	usleep(1000 * (id->id % 2 == 0));
+	//usleep(1000 * (id->id % 2 == 0));
 	while (1)
 	{
 		if (!acting(ph, THINKING, id->id, get_timestamp_in_ms()))

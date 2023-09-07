@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:43:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 16:56:17 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:27:28 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,16 @@ void	ft_destructor(t_ph *ph)
 {
 	if (ph)
 	{
-		pthread_mutex_destroy(&ph->data_stomach);
-		pthread_mutex_destroy(&ph->data_meal);
-		pthread_mutex_destroy(&ph->data_eating);
-		pthread_mutex_destroy(&ph->data_termination);
-		pthread_mutex_destroy(&ph->data_print);
+		if (ph->data_stomach.__align)
+			pthread_mutex_destroy(&ph->data_stomach);
+		if (ph->data_meal.__align)
+			pthread_mutex_destroy(&ph->data_meal);
+		if (ph->data_eating.__align)
+			pthread_mutex_destroy(&ph->data_eating);
+		if (ph->data_termination.__align)
+			pthread_mutex_destroy(&ph->data_termination);
+		if (ph->data_print.__align)
+			pthread_mutex_destroy(&ph->data_print);
 		if (ph->philo)
 			free(ph->philo);
 		if (ph->forks)

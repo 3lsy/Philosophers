@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/01 16:24:11 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 14:42:52 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 18:19:54 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	ph_eats(t_ph *ph, t_id *id, int lfork, int rfork)
 	usleep(ph->eat * 1000);
 	pthread_mutex_unlock(&ph->forks[lfork]);
 	pthread_mutex_unlock(&ph->forks[rfork]);
-	set_eating(ph, id, 0);
 	if (ph->times_eat != -1 && id->meal_counter == ph->times_eat)
 		stomach_full(ph, id->id);
 	return (1);
@@ -75,5 +74,6 @@ int	ph_sleeps(t_ph *ph, t_id *id)
 	if (!acting(ph, SLEEPING, id->id, get_timestamp_in_ms()))
 		return (0);
 	usleep(ph->sleep * 1000);
+	set_eating(ph, id, 0);
 	return (1);
 }
