@@ -6,7 +6,7 @@
 /*   By: echavez- <echavez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 00:43:28 by echavez-          #+#    #+#             */
-/*   Updated: 2023/09/07 15:44:05 by echavez-         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:56:17 by echavez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ void	ft_destructor(t_ph *ph)
 {
 	if (ph)
 	{
-		if (ph->data_stomach.__align)
-			pthread_mutex_destroy(&ph->data_stomach);
-		if (ph->data_meal.__align)
-			pthread_mutex_destroy(&ph->data_meal);
+		pthread_mutex_destroy(&ph->data_stomach);
+		pthread_mutex_destroy(&ph->data_meal);
+		pthread_mutex_destroy(&ph->data_eating);
+		pthread_mutex_destroy(&ph->data_termination);
+		pthread_mutex_destroy(&ph->data_print);
 		if (ph->philo)
 			free(ph->philo);
 		if (ph->forks)
@@ -73,8 +74,6 @@ int	main(int ac, char **av)
 		i = 0;
 		ph = ft_arg_parser(av);
 		ph = create_forks(ph);
-		pthread_mutex_init(&ph->data_meal, NULL);
-		pthread_mutex_init(&ph->data_stomach, NULL);
 		ph = create_philosophers(ph);
 		pthread_create(&ph->lamuerte, NULL, lamuerte, (void *)ph);
 		while (i < ph->n_philo)
